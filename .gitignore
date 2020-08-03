@@ -1,3 +1,4 @@
 *.o
 *.lo
 .DS_Store
+*.tar.gz
