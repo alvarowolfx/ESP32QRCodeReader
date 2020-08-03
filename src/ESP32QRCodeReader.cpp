@@ -72,17 +72,13 @@ QRCodeReaderSetupErr ESP32QRCodeReader::setup()
   return SETUP_OK;
 }
 
-void dump_data(const struct quirc_data *data)
+void dumpData(const struct quirc_data *data)
 {
-  Serial.printf("    Version: %d\n", data->version);
-  Serial.printf("    ECC level: %c\n", "MLHQ"[data->ecc_level]);
-  Serial.printf("    Mask: %d\n", data->mask);
-  //Serial.printf("    Data type: %d (%s)\n", data->data_type,data_type_str(data->data_type));
-  Serial.printf("    Length: %d\n", data->payload_len);
-  Serial.printf("    Payload: %s\n", data->payload);
-
-  if (data->eci)
-    Serial.printf("    ECI: %d\n", data->eci);
+  Serial.printf("Version: %d\n", data->version);
+  Serial.printf("ECC level: %c\n", "MLHQ"[data->ecc_level]);
+  Serial.printf("Mask: %d\n", data->mask);
+  Serial.printf("Length: %d\n", data->payload_len);
+  Serial.printf("Payload: %s\n", data->payload);
 }
 
 void qrCodeDetectTask(void *taskData)
@@ -225,8 +221,8 @@ void qrCodeDetectTask(void *taskData)
       {
         if (self->debug)
         {
-          Serial.printf("  Decoding successful:\n");
-          dump_data(&data);
+          Serial.printf("Decoding successful:\n");
+          dumpData(&data);
         }
 
         qrCodeData.dataType = data.data_type;
