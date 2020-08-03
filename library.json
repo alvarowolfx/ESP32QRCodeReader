@@ -1,0 +1,22 @@
+{
+  "name": "ESP32QRCodeReader",
+  "version": "1.0.0",
+  "description": "A library to read QR Codes using an ESP32 with a camera module",
+  "keywords": "qrcode, esp32, camera",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alvarowolfx/ESP32QRCodeReader"
+  },
+  "authors": [
+    {
+      "name": "Alvaro Viebrantz",
+      "email": "alvarowolfx@gmail.com",
+      "url": "https://github.com/alvarowolfx",
+      "maintainer": true
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/alvarowolfx/ESP32QRCodeReader",
+  "frameworks": "arduino",
+  "platforms": "espressif32"
+}
