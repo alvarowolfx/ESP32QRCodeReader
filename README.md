@@ -4,6 +4,11 @@ This library provides a interface to read QR Codes using an ESP32 with a camera.
 
 Internally this lib uses a slight modified version of the [Quirc library](https://github.com/dlbeer/quirc).
 
+## Demos
+
+- EN-US - See demo video at https://twitter.com/alvaroviebrantz/status/1290116219199279104?s=20
+- PT-BR - Veja video de demo em https://twitter.com/alvaroviebrantz/status/1290116405824806912?s=20
+
 ## Usage
 
 Is recommended to use PlatformIO to install this lib. Add `ESP32QRCodeReader` to your `platformio.ini` file.
