@@ -26,16 +26,15 @@
 #ifndef QUIRC_MAX_REGIONS
 #define QUIRC_MAX_REGIONS 254
 #endif
+
 #define QUIRC_MAX_CAPSTONES 32
 #define QUIRC_MAX_GRIDS 8
 
 #define QUIRC_PERSPECTIVE_PARAMS 8
 
 #if QUIRC_MAX_REGIONS < UINT8_MAX
-#define QUIRC_PIXEL_ALIAS_IMAGE 1
 typedef uint8_t quirc_pixel_t;
 #elif QUIRC_MAX_REGIONS < UINT16_MAX
-#define QUIRC_PIXEL_ALIAS_IMAGE 0
 typedef uint16_t quirc_pixel_t;
 #else
 #error "QUIRC_MAX_REGIONS > 65534 is not supported"
@@ -46,7 +45,7 @@ struct quirc_region
   struct quirc_point seed;
   int count;
   int capstone;
-};
+} __attribute__((aligned(8)));
 
 struct quirc_capstone
 {
@@ -55,10 +54,10 @@ struct quirc_capstone
 
   struct quirc_point corners[4];
   struct quirc_point center;
-  double c[QUIRC_PERSPECTIVE_PARAMS];
+  float c[QUIRC_PERSPECTIVE_PARAMS];
 
   int qr_grid;
-};
+} __attribute__((aligned(8)));
 
 struct quirc_grid
 {
@@ -76,8 +75,8 @@ struct quirc_grid
 
   /* Grid size and perspective transform */
   int grid_size;
-  double c[QUIRC_PERSPECTIVE_PARAMS];
-};
+  float c[QUIRC_PERSPECTIVE_PARAMS];
+} __attribute__((aligned(8)));
 
 struct quirc
 {
@@ -94,7 +93,7 @@ struct quirc
 
   int num_grids;
   struct quirc_grid grids[QUIRC_MAX_GRIDS];
-};
+} __attribute__((aligned(8)));
 
 /************************************************************************
  * QR-code version information database
@@ -105,17 +104,17 @@ struct quirc
 
 struct quirc_rs_params
 {
-  int bs; /* Small block size */
-  int dw; /* Small data words */
-  int ns; /* Number of small blocks */
-};
+  uint8_t bs; /* Small block size */
+  uint8_t dw; /* Small data words */
+  uint8_t ns; /* Number of small blocks */
+} __attribute__((aligned(8)));
 
 struct quirc_version_info
 {
-  int data_bytes;
-  int apat[QUIRC_MAX_ALIGNMENT];
+  uint16_t data_bytes;
+  uint8_t apat[QUIRC_MAX_ALIGNMENT];
   struct quirc_rs_params ecc[4];
-};
+} __attribute__((aligned(8)));
 
 extern const struct quirc_version_info quirc_version_db[QUIRC_MAX_VERSION + 1];
 

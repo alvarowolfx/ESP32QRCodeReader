@@ -62,7 +62,7 @@ extern "C"
   {
     int x;
     int y;
-  };
+  } __attribute__((aligned(8)));
 
   /* This enum describes the various decoder errors which may occur. */
   typedef enum
@@ -122,41 +122,41 @@ extern "C"
     struct quirc_point corners[4];
 
     /* The number of cells across in the QR-code. The cell bitmap
-	 * is a bitmask giving the actual values of cells. If the cell
-	 * at (x, y) is black, then the following bit is set:
-	 *
-	 *     cell_bitmap[i >> 3] & (1 << (i & 7))
-	 *
-	 * where i = (y * size) + x.
-	 */
+     * is a bitmask giving the actual values of cells. If the cell
+     * at (x, y) is black, then the following bit is set:
+     *
+     *      cell_bitmap[i >> 3] & (1 << (i & 7))
+     *
+     * where i = (y * size) + x.
+     */
     int size;
     uint8_t cell_bitmap[QUIRC_MAX_BITMAP];
-  };
+  } __attribute__((aligned(8)));
 
   /* This structure holds the decoded QR-code data */
   struct quirc_data
   {
     /* Various parameters of the QR-code. These can mostly be
-	 * ignored if you only care about the data.
-	 */
+     * ignored if you only care about the data.
+     */
     int version;
     int ecc_level;
     int mask;
 
     /* This field is the highest-valued data type found in the QR
-	 * code.
-	 */
+     * code.
+     */
     int data_type;
 
     /* Data payload. For the Kanji datatype, payload is encoded as
-	 * Shift-JIS. For all other datatypes, payload is ASCII text.
-	 */
+     * Shift-JIS. For all other datatypes, payload is ASCII text.
+     */
     uint8_t payload[QUIRC_MAX_PAYLOAD];
     int payload_len;
 
     /* ECI assignment number */
     uint32_t eci;
-  };
+  } __attribute__((aligned(8)));
 
   /* Return the number of QR-codes identified in the last processed
  * image.

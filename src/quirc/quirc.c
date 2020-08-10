@@ -24,6 +24,7 @@ const char *quirc_version(void)
   return "1.0";
 }
 
+//static struct quirc _q;
 struct quirc *quirc_new(void)
 {
   struct quirc *q = ps_malloc(sizeof(*q));
@@ -37,84 +38,46 @@ struct quirc *quirc_new(void)
 
 void quirc_destroy(struct quirc *q)
 {
-  free(q->image);
-  /* q->pixels may alias q->image when their type representation is of the
-	   same size, so we need to be careful here to avoid a double free */
-  if (!QUIRC_PIXEL_ALIAS_IMAGE)
-    free(q->pixels);
-  free(q);
+  if (q->image)
+    if (q->image)
+      free(q->image);
+  if (sizeof(*q->image) != sizeof(*q->pixels))
+    if (q->pixels)
+      free(q->pixels);
+
+  if (q)
+    free(q);
 }
 
+//static quirc_pixel_t img_buf[320*240];
 int quirc_resize(struct quirc *q, int w, int h)
 {
-  uint8_t *image = NULL;
-  quirc_pixel_t *pixels = NULL;
-  int res = 0;
-  /*
-	 * XXX: w and h should be size_t (or at least unsigned) as negatives
-	 * values would not make much sense. The downside is that it would break
-	 * both the API and ABI. Thus, at the moment, let's just do a sanity
-	 * check.
-	 */
-  if (w < 0 || h < 0)
+  if (q->image)
   {
-    res = -1;
-    goto fail;
+    free(q->image);
   }
+  uint8_t *new_image = ps_malloc(w * h);
 
-  /*
-	 * alloc a new buffer for q->image. We avoid realloc(3) because we want
-	 * on failure to be leave `q` in a consistant, unmodified state.
-	 */
-  image = ps_calloc(w, h);
-  if (!image)
-  {
-    res = -2;
-    goto fail;
-  }
+  if (!new_image)
+    return -1;
 
-  /* compute the "old" (i.e. currently allocated) and the "new"
-	   (i.e. requested) image dimensions */
-  size_t olddim = q->w * q->h;
-  size_t newdim = w * h;
-  size_t min = (olddim < newdim ? olddim : newdim);
-
-  /*
-	 * copy the data into the new buffer, avoiding (a) to read beyond the
-	 * old buffer when the new size is greater and (b) to write beyond the
-	 * new buffer when the new size is smaller, hence the min computation.
-	 */
-  (void)memcpy(image, q->image, min);
-
-  /* alloc a new buffer for q->pixels if needed */
-  if (!QUIRC_PIXEL_ALIAS_IMAGE)
-  {
-    pixels = ps_calloc(newdim, sizeof(quirc_pixel_t));
-    if (!pixels)
+  if (sizeof(*q->image) != sizeof(*q->pixels))
+  { //should gray, 1==1
+    size_t new_size = w * h * sizeof(quirc_pixel_t);
+    if (q->pixels)
+      free(q->pixels);
+    quirc_pixel_t *new_pixels = ps_malloc(new_size);
+    if (!new_pixels)
     {
-      res = -3;
-      goto fail;
+      free(new_image);
+      return -1;
     }
+    q->pixels = new_pixels;
   }
-
-  /* alloc succeeded, update `q` with the new size and buffers */
+  q->image = new_image;
   q->w = w;
   q->h = h;
-  free(q->image);
-  q->image = image;
-  if (!QUIRC_PIXEL_ALIAS_IMAGE)
-  {
-    free(q->pixels);
-    q->pixels = pixels;
-  }
-
-  return res;
-  /* NOTREACHED */
-fail:
-  free(image);
-  free(pixels);
-
-  return res;
+  return 0;
 }
 
 int quirc_count(const struct quirc *q)

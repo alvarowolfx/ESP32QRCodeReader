@@ -2,7 +2,7 @@
 
 This library provides a interface to read QR Codes using an ESP32 with a camera.
 
-Internally this lib uses a slight modified version of the [Quirc library](https://github.com/dlbeer/quirc).
+Internally this lib uses a slight modified version of the [Quirc library](https://github.com/dlbeer/quirc) and some code from OpenMV port on the [MaixPy](https://github.com/sipeed/MaixPy) project.
 
 ## Demos
 
@@ -108,5 +108,6 @@ This code is released under the MIT License.
 ### References
 
 - https://github.com/dlbeer/quirc
+- https://github.com/sipeed/MaixPy
 - https://github.com/Schaggo/QR-ARDUINO
 - https://github.com/donny681/ESP32_CAMERA_QR
