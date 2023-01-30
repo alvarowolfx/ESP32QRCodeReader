@@ -236,7 +236,10 @@ void qrCodeDetectTask(void *taskData)
       }
       xQueueSend(self->qrCodeQueue, &qrCodeData, (TickType_t)0);
 
-      Serial.println();
+      if (self->debug)
+      {
+        Serial.println();
+      }
     }
 
     //Serial.printf("finish recoginize\r\n");
