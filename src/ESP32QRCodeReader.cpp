@@ -198,6 +198,11 @@ void qrCodeDetectTask(void *taskData)
 
       quirc_extract(q, i, &code);
       err = quirc_decode(&code, &data);
+      if (err == QUIRC_ERROR_DATA_ECC)
+      {
+        quirc_flip(&code);
+        err = quirc_decode(&code, &data);
+      }
 
       struct QRCodeData qrCodeData;
 

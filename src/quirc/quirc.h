@@ -171,6 +171,9 @@ extern "C"
   quirc_decode_error_t quirc_decode(const struct quirc_code *code,
                                     struct quirc_data *data);
 
+  /* Flip a QR-code according to optional mirror feature of ISO 18004:2015 */
+  void quirc_flip(struct quirc_code *code);
+
 #ifdef __cplusplus
 }
 #endif
