@@ -200,4 +200,5 @@ struct CameraPins
     .HREF_GPIO_NUM = 7,          \
     .PCLK_GPIO_NUM = 13,         \
   }
+
 #endif //ESP32_CAMERA_PINS_H_
